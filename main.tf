@@ -24,6 +24,32 @@ resource "azurerm_resource_group" "rg_main" {
   tags = {
     environment = "projet devOps"
   }
-} 
+}
 
+# Container registry
+resource "azurerm_container_registry" "acr" {
+  name                = "registryaliciasaciawabah"
+  resource_group_name = azurerm_resource_group.rg_main.name
+  location            = azurerm_resource_group.rg_main.location
+  sku                 = "Standard"
+  admin_enabled       = false
+}
+
+# Cluster Kubernetes
+resource "azurerm_kubernetes_cluster" "rg_main" {
+  name                = "cluster_kube"
+  location            = azurerm_resource_group.rg_main.location
+  resource_group_name = azurerm_resource_group.rg_main.name
+  dns_prefix          = "kubecluster"
+
+  default_node_pool {
+    name       = "default"
+    node_count = 1
+    vm_size    = "Standard_B2s"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
 
