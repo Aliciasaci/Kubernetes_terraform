@@ -71,7 +71,7 @@ resource "azurerm_public_ip" "aks_public_ip" {
 resource "azurerm_role_assignment" "acr_pull_assignment" {
   scope                = azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
-  principal_id         = azurerm_kubernetes_cluster.rg_main.identity[0].principal_id
+  principal_id         = azurerm_kubernetes_cluster.rg_main.kubelet_identity[0].object_id
 }
 
 resource "azurerm_role_assignment" "acr_push_assignment" {
